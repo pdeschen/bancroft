@@ -1,0 +1,14 @@
+
+{"class":"VERSION","release":"2.95","rev":"2010-12-03T21:16:23","proto_major":3,"proto_minor":3}
+{"class":"DEVICES","devices":[{"class":"DEVICE","path":"/dev/ttyUSB0"}]}
+{"class":"WATCH","enable":true,"json":true,"nmea":false,"raw":0,"scaled":false,"timing":false}
+
+
+{"class":"TPV","tag":"GLL","device":"/dev/ttyUSB0","time":1311042294.000,"ept":0.005,"lat":45.457871667,"lon":-73.569558333,"alt":74.700,"epv":23.000,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+{"class":"SKY","tag":"GSV","device":"/dev/ttyUSB0","vdop":1.00,"hdop":6.70,"pdop":6.80,"satellites":[{"PRN":2,"el":50,"az":268,"ss":0,"used":false},{"PRN":4,"el":76,"az":37,"ss":50,"used":true},{"PRN":5,"el":15,"az":204,"ss":0,"used":false},{"PRN":10,"el":58,"az":166,"ss":0,"used":false},{"PRN":12,"el":39,"az":297,"ss":38,"used":true},{"PRN":13,"el":17,"az":94,"ss":0,"used":false},{"PRN":17,"el":44,"az":119,"ss":0,"used":false},{"PRN":20,"el":9,"az":42,"ss":0,"used":false},{"PRN":23,"el":18,"az":63,"ss":40,"used":true},{"PRN":25,"el":13,"az":323,"ss":0,"used":false}]}
+{"class":"TPV","tag":"GLL","device":"/dev/ttyUSB0","time":1311042296.000,"ept":0.005,"lat":45.457868333,"lon":-73.569558333,"alt":74.700,"epv":23.000,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+{"class":"TPV","tag":"GLL","device":"/dev/ttyUSB0","time":1311042298.000,"ept":0.005,"lat":45.457863333,"lon":-73.569560000,"alt":74.700,"epv":23.000,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+{"class":"TPV","tag":"GLL","device":"/dev/ttyUSB0","time":1311042300.000,"ept":0.005,"lat":45.457856667,"lon":-73.569560000,"alt":74.700,"epv":23.000,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+{"class":"SKY","tag":"GSV","device":"/dev/ttyUSB0","vdop":1.00,"hdop":6.70,"pdop":6.80,"satellites":[{"PRN":2,"el":50,"az":268,"ss":0,"used":false},{"PRN":4,"el":76,"az":37,"ss":50,"used":true},{"PRN":5,"el":15,"az":204,"ss":0,"used":false},{"PRN":10,"el":58,"az":166,"ss":0,"used":false},{"PRN":12,"el":39,"az":297,"ss":37,"used":true},{"PRN":13,"el":17,"az":94,"ss":0,"used":false},{"PRN":17,"el":44,"az":119,"ss":0,"used":false},{"PRN":20,"el":9,"az":42,"ss":0,"used":false},{"PRN":23,"el":18,"az":63,"ss":40,"used":true},{"PRN":25,"el":13,"az":323,"ss":0,"used":false}]}
+{"class":"TPV","tag":"GLL","device":"/dev/ttyUSB0","time":1311042302.000,"ept":0.005,"lat":45.457848333,"lon":-73.569560000,"alt":74.700,"epv":23.000,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+
