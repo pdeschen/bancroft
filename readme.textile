@@ -1,4 +1,4 @@
-"bancroft:http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method" is a "node":http://nodejs.org client for the gps daemon providing configurable async location tracking.
+"bancroft":http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method is a "node":http://nodejs.org client for the gps daemon providing configurable async location tracking.
 
 h2. How it works
 
