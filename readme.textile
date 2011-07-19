@@ -1,0 +1,48 @@
+"bancroft:http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method" is a "node":http://nodejs.org client for the gps daemon providing configurable async location tracking.
+
+h2. How it works
+
+Stay tuned.
+
+h2. Examples
+
+<pre>
+var Bancroft = require('./bancroft.js');
+
+var bancroft = new Bancroft();
+bancroft.on('connect', function () {
+  console.log('connected');
+});
+bancroft.on('location', function (location) {
+  console.log('got location');
+});
+bancroft.on('satellite', function (location) {
+  console.log('got satellite');
+});
+bancroft.on('disconnect', function (err) {
+  console.log('disconnected');
+});
+</pre>
+
+h2. Features
+
+* Real-time location
+* Satellite information
+
+h2. Installation
+
+h3. Requirements
+
+This module assumes you have a working gps daemon accessible somewhere on the network along with a GPS tracking device up and running. This module has been tested with an old dusty Garmin eTrex Legend with a Serial->USB adapter cable.
+
+h3. Git Clone
+
+@$ git clone git://github.com/pdeschen/camelot.git@
+
+h3. Install from npm
+
+@$ sudo npm install camelot [-g]@
+
+h2. Todos
+
+* Accumate waypoints/route into kml? 
