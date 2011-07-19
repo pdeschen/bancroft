@@ -2,7 +2,9 @@
 
 h2. How it works
 
-Stay tuned.
+Upon object creation ( _new Bancroft()_ ), bancroft connects to a running GPS daemon and send _?WATCH_ and _?POLL_ messages to receive messages (json type) back from the daemon, hence, from the GPS device, itself. Upon connection, a _connection_ event is emitted along with daemon version and release details object. A _disconnect_ event is emitted once the daemon is found off grid.
+
+At any time, bancroft, keeps track of the current location along with information about current satellite status. A _location_ event is emitted once a new location has been tracked, that is, whenever the latitude, longitude or altitude receive from the device differs from the currently stored information. A _satellite_ event is emitted whenever a given satellite (PRN) changes status.
 
 h2. Examples
 
@@ -14,34 +16,35 @@ bancroft.on('connect', function () {
   console.log('connected');
 });
 bancroft.on('location', function (location) {
-  console.log('got location');
+  console.log('got new location');
 });
-bancroft.on('satellite', function (location) {
-  console.log('got satellite');
+bancroft.on('satellite', function (satellite) {
+  console.log('got new satellite state');
 });
 bancroft.on('disconnect', function (err) {
   console.log('disconnected');
 });
+
 </pre>
 
 h2. Features
 
-* Real-time location
-* Satellite information
+* Real-time location events
+* Real-time satellite state events
 
 h2. Installation
 
 h3. Requirements
 
-This module assumes you have a working gps daemon accessible somewhere on the network along with a GPS tracking device up and running. This module has been tested with an old dusty Garmin eTrex Legend with a Serial->USB adapter cable.
+This module assumes you have a working "gps daemon":http://gpsd.berlios.de accessible somewhere reacheable on the network along with a GPS tracking device up and running. This module has been tested with an old dusty Garmin eTrex Legend with a Serial->USB adapter cable using the NMEA data protocol.
 
 h3. Git Clone
 
-@$ git clone git://github.com/pdeschen/camelot.git@
+@$ git clone git://github.com/pdeschen/bancroft.git@
 
 h3. Install from npm
 
-@$ sudo npm install camelot [-g]@
+@$ sudo npm install bancroft [-g]@
 
 h2. Todos
 

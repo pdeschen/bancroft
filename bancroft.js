@@ -1,49 +1,88 @@
-var spawn = require('child_process').spawn, sys = require('sys'), events = require('events'), fs = require('fs');
+var spawn = require('child_process').spawn, sys = require('sys'), events = require('events'), fs = require('fs'), net =
+  require('net');
 
+/**
+ * gpsd client constructor. Connection with daemon is established upon object creation.
+ * 
+ * @param options {'port': 2947, 'hostname': 'localhost'}
+ * @return this with access to satellites and location properties along with EventEmitter prototypes
+ */
 var Bancroft = function (options) {
-  var emitter = events.EventEmitter.call(this);
-  var opts = mixin(options, {
-    'port' : 2947,
-    'hostname' : 'localhost'
-  });
-  var net = require('net');
+  this.satellites = {};
+  this.location = {
+    latitude : 0,
+    longitude : 0,
+    altitude : 0
+  };
 
-  var serviceSocket = new net.Socket();
-  serviceSocket.setEncoding('ascii');
-  serviceSocket.on("data", function (payload) {
+  (function () {
+    var emitter = events.EventEmitter.call(this);
+    var opts = mixin(options, {
+      'port' : 2947,
+      'hostname' : 'localhost'
+    });
+    var serviceSocket = new net.Socket();
+    serviceSocket.setEncoding('ascii');
+    serviceSocket.on("data", function (payload) {
+      var info = payload.split('\n');
+      for ( var index = 0; index < info.length; index++) {
+        if (info[index]) {
+          var data = JSON.parse(info[index]);
+          console.log('got', data);
+          if (data.class === 'VERSION') {
+            emitter.emit('connect', {
+              'release' : data.release,
+              'version' : data.version
+            });
+          } else if (data.class === 'TPV') {
 
-    var info = payload.split('\n');
-    for ( var index = 0; index < info.length; index++) {
-      if (info[index]) {
-        var data = JSON.parse(info[index]);
-        console.log('got', data);
-        if (data.class === 'VERSION') {
-          emitter.emit('connect', {
-            'release' : data.release,
-            'version' : data.version
-          });
-        } else if (data.class === 'TPV') {
-          emitter.emit('location', data);
-        } else if (data.class === 'SKY') {
-          emitter.emit('satellite', data);
+            location.time = data.time;
+            /* are we moving */
+            if (location.latitude !== data.lat || location.longitude !== data.lon || location.altitude !== data.alt) {
+              location.latitude = data.lat;
+              location.longitude = data.lon;
+              location.altitude = data.alt;
+              location.speed = data.speed;
+              emitter.emit('location', location);
+            }
+
+          } else if (data.class === 'SKY') {
+            for ( var index = 0; index < data.satellites.length; index++) {
+              var satellite = data.satellites[index];
+
+              if (satellites[satellite.prn]) {
+                /* emit if present and new state */
+                if (satellites[satellite.prn] != satellite.used) {
+                  satellites[satellite.prn] = satellite.used;
+                  emitter.emit('satellite', satellites[satellite.prn]);
+                }
+              } else {
+                /* emit if not present */
+                satellites[satellite.prn] = satellite.used;
+                emitter.emit('satellite', satellites[satellite.prn]);
+              }
+            }
+
+          } else if (data.class === 'ERROR') {
+            emitter.emit('error', data);
+          }
         }
       }
-    }
-    /* serviceSocket.write('?POLL;\n'); */
+    });
+    serviceSocket.on("close", function (err) {
+      emitter.emit('disconnect', err);
+    });
 
-  });
-  serviceSocket.on("close", function (err) {
-    emitter.emit('disconnect', err);
-  });
+    serviceSocket.on('connect', function (socket) {
+      serviceSocket.write('?WATCH={"enable":true,"json":true}\n');
+      serviceSocket.write('?POLL;\n');
+    });
 
-  serviceSocket.on('connect', function (socket) {
-    serviceSocket.write('?WATCH={"enable":true,"json":true}\n');
-    serviceSocket.write('?POLL;\n');
-  });
-
-  serviceSocket.connect(opts.port, opts.hostname);
-
-  return this;
+    serviceSocket.connect(opts.port, opts.hostname);
+  }).call(this);
+  
+  /* only satellites and location properties are externally visible */
+  return (this);
 };
 
 var mixin = function (source, destination) {
@@ -78,5 +117,6 @@ var mixin = function (source, destination) {
   return destination;
 };
 
+/* get prototype chain */
 sys.inherits(Bancroft, events.EventEmitter);
 module.exports = Bancroft;

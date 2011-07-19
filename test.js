@@ -5,10 +5,10 @@ bancroft.on('connect', function () {
   console.log('connected');
 });
 bancroft.on('location', function (location) {
-  console.log('got location');
+  console.log('got new location');
 });
-bancroft.on('satellite', function (location) {
-  console.log('got satellite');
+bancroft.on('satellite', function (satellite) {
+  console.log('got new satellite state');
 });
 bancroft.on('disconnect', function (err) {
   console.log('disconnected');
