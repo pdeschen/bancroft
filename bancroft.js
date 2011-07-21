@@ -2,17 +2,26 @@ var spawn = require('child_process').spawn, sys = require('sys'), events = requi
   require('net');
 
 /**
- * gpsd client constructor. Connection with daemon is established upon object creation.
+ * gpsd client constructor. Connection with daemon is established upon object
+ * creation.
  * 
- * @param options {'port': 2947, 'hostname': 'localhost'}
- * @return this with access to satellites and location properties along with EventEmitter prototypes
+ * @param options
+ *            {'port': 2947, 'hostname': 'localhost'}
+ * @return this with access to satellites and location properties along with
+ *         EventEmitter prototypes
  */
 var Bancroft = function (options) {
   this.satellites = {};
+  /* geographic coordinate reference system (long, lat, alt) */
   this.location = {
     latitude : 0,
     longitude : 0,
-    altitude : 0
+    altitude : 0,
+    speed : 0,
+    geometry : {
+      "type" : "Point",
+      "coordinates" : [ 0.0, 0.0, 0.0 ]
+    }
   };
 
   (function () {
@@ -28,7 +37,6 @@ var Bancroft = function (options) {
       for ( var index = 0; index < info.length; index++) {
         if (info[index]) {
           var data = JSON.parse(info[index]);
-          console.log('got', data);
           if (data.class === 'VERSION') {
             emitter.emit('connect', {
               'release' : data.release,
@@ -43,6 +51,7 @@ var Bancroft = function (options) {
               location.longitude = data.lon;
               location.altitude = data.alt;
               location.speed = data.speed;
+              location.geometries.coordinates = [ data.lon, data.lat, data.alt ];
               emitter.emit('location', location);
             }
 
@@ -80,7 +89,7 @@ var Bancroft = function (options) {
 
     serviceSocket.connect(opts.port, opts.hostname);
   }).call(this);
-  
+
   /* only satellites and location properties are externally visible */
   return (this);
 };

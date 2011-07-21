@@ -1,0 +1,7 @@
+0.0.2
+* Added support for "geojson":http://geojson.org/ format as part of the location event.
+* Fixed missing speed property within location event.
+
+0.0.1
+
+* Initial release
