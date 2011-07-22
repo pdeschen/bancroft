@@ -10,89 +10,96 @@ var spawn = require('child_process').spawn, sys = require('sys'), events = requi
  * @return this with access to satellites and location properties along with
  *         EventEmitter prototypes
  */
-var Bancroft = function (options) {
-  this.satellites = {};
-  /* geographic coordinate reference system (long, lat, alt) */
-  this.location = {
-    latitude : 0,
-    longitude : 0,
-    altitude : 0,
-    speed : 0,
-    geometry : {
-      "type" : "Point",
-      "coordinates" : [ 0.0, 0.0, 0.0 ]
-    }
-  };
+var Bancroft =
+  function (options) {
+    this.satellites = {};
+    /* geographic coordinate reference system (long, lat, alt) */
+    this.location = {
+      timestamp : 0,
+      latitude : 0,
+      longitude : 0,
+      altitude : 0,
+      speed : 0,
+      geometries : {
+        "type" : "Point",
+        "coordinates" : [ 0.0, 0.0, 0.0 ]
+      }
+    };
 
-  (function () {
-    var emitter = events.EventEmitter.call(this);
-    var opts = mixin(options, {
-      'port' : 2947,
-      'hostname' : 'localhost'
-    });
-    var serviceSocket = new net.Socket();
-    serviceSocket.setEncoding('ascii');
-    serviceSocket.on("data", function (payload) {
-      var info = payload.split('\n');
-      for ( var index = 0; index < info.length; index++) {
-        if (info[index]) {
-          var data = JSON.parse(info[index]);
-          if (data.class === 'VERSION') {
-            emitter.emit('connect', {
-              'release' : data.release,
-              'version' : data.version
-            });
-          } else if (data.class === 'TPV') {
-
-            location.time = data.time;
-            /* are we moving */
-            if (location.latitude !== data.lat || location.longitude !== data.lon || location.altitude !== data.alt) {
-              location.latitude = data.lat;
-              location.longitude = data.lon;
-              location.altitude = data.alt;
-              location.speed = data.speed;
-              location.geometries.coordinates = [ data.lon, data.lat, data.alt ];
-              emitter.emit('location', location);
-            }
-
-          } else if (data.class === 'SKY') {
-            for ( var index = 0; index < data.satellites.length; index++) {
-              var satellite = data.satellites[index];
-
-              if (satellites[satellite.prn]) {
-                /* emit if present and new state */
-                if (satellites[satellite.prn] != satellite.used) {
-                  satellites[satellite.prn] = satellite.used;
-                  emitter.emit('satellite', satellites[satellite.prn]);
-                }
-              } else {
-                /* emit if not present */
-                satellites[satellite.prn] = satellite.used;
-                emitter.emit('satellite', satellites[satellite.prn]);
+    (function () {
+      var self = this;
+      var emitter = events.EventEmitter.call(this);
+      var opts = mixin(options, {
+        'port' : 2947,
+        'hostname' : 'localhost'
+      });
+      var serviceSocket = new net.Socket();
+      serviceSocket.setEncoding('ascii');
+      serviceSocket.on("data", function (payload) {
+        var info = payload.split('\n');
+        for ( var index = 0; index < info.length; index++) {
+          if (info[index]) {
+            var data = JSON.parse(info[index]);
+            if (data.class === 'VERSION') {
+              emitter.emit('connect', {
+                'release' : data.release,
+                'version' : data.version
+              });
+            } else if (data.class === 'TPV') {
+              /* timestamp received is in seconds */
+              self.location.timestamp = data.time * 1000;
+              /* are we moving */
+              if (self.location.latitude !== data.lat || self.location.longitude !== data.lon
+                || self.location.altitude !== data.alt) {
+                self.location.latitude = data.lat;
+                self.location.longitude = data.lon;
+                self.location.altitude = data.alt;
+                self.location.speed = data.speed;
+                self.location.geometries.coordinates = [ data.lon, data.lat, data.alt ];
+                emitter.emit('location', self.location);
               }
-            }
 
-          } else if (data.class === 'ERROR') {
-            emitter.emit('error', data);
+            } else if (data.class === 'SKY') {
+              for ( var index = 0; index < data.satellites.length; index++) {
+                var satellite = data.satellites[index];
+                if (self.satellites[satellite.PRN] !== undefined) {
+                  /* emit if present and new state */
+                  if (self.satellites[satellite.PRN] != satellite.used) {
+                    self.satellites[satellite.PRN] = satellite.used;
+                    emitter.emit('satellite', self.satellites[satellite.PRN]);
+                  }
+                } else {
+                  /* emit if not present */
+                  self.satellites[satellite.PRN] = satellite.used;
+                  emitter.emit('satellite', self.satellites[satellite.PRN]);
+                }
+              }
+
+            } else if (data.class === 'ERROR') {
+              emitter.emit('error', data);
+            }
           }
         }
-      }
-    });
-    serviceSocket.on("close", function (err) {
-      emitter.emit('disconnect', err);
-    });
+      });
+      serviceSocket.on("close", function (err) {
+        emitter.emit('disconnect', err);
+      });
 
-    serviceSocket.on('connect', function (socket) {
-      serviceSocket.write('?WATCH={"enable":true,"json":true}\n');
-      serviceSocket.write('?POLL;\n');
-    });
+      serviceSocket.on('connect', function (socket) {
+        serviceSocket.write('?WATCH={"enable":true,"json":true}\n');
+        serviceSocket.write('?POLL;\n');
+      });
 
-    serviceSocket.connect(opts.port, opts.hostname);
-  }).call(this);
+      serviceSocket.on('error', function (error) {
+        emitter.emit('error', error);
+      });
+      serviceSocket.connect(opts.port, opts.hostname);
 
-  /* only satellites and location properties are externally visible */
-  return (this);
-};
+    }).apply(this);
+
+    /* only satellites and location properties are externally visible */
+    return (this);
+  };
 
 var mixin = function (source, destination) {
 
