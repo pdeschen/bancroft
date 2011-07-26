@@ -26,7 +26,7 @@ h3. Location Structure
 h2. Examples
 
 <pre>
-var Bancroft = require('./bancroft.js');
+var Bancroft = require('bancroft');
 
 var bancroft = new Bancroft();
 bancroft.on('connect', function () {
@@ -55,6 +55,11 @@ h2. Installation
 h3. Requirements
 
 This module assumes you have a working "gps daemon":http://gpsd.berlios.de accessible somewhere reacheable on the network along with a GPS tracking device up and running. This module has been tested with an old dusty Garmin eTrex Legend with a Serial->USB adapter cable using the NMEA data protocol.
+
+h4. Testing gpsd
+
+@$ sudo gpsd -D 2 -n -b -N -P /tmp/gpsd.pid /dev/ttyUSB0@
+@$ gpspipe -w@
 
 h3. Git Clone
 

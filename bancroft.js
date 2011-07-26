@@ -39,7 +39,13 @@ var Bancroft =
         var info = payload.split('\n');
         for ( var index = 0; index < info.length; index++) {
           if (info[index]) {
+            try {
             var data = JSON.parse(info[index]);
+            }
+            catch(error) {
+              emitter.emit('error', {message: "bad message format", cause: info[index], error: error});
+              continue;
+            }
             if (data.class === 'VERSION') {
               emitter.emit('connect', {
                 'release' : data.release,

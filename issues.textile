@@ -1,0 +1,18 @@
+# bad message format
+
+From time to time, message get splits between to poll. Should I look for \r along with \n? 
+
+error! { message: 'bad message format',
+  cause: '{"class":"SKY","tag":"GSV","device":"/dev/ttyUSB0","xdop":2.11,"ydop":1.30,"vdop":3.10,"tdop":2.74,"hdop":2.00,"gdop":4.88,"pdop":3.70,"satellites":[{"PRN":2,"el":36,"az":254,"ss"',
+  error: 
+   { stack: [Getter/Setter],
+     arguments: [],
+     type: 'unexpected_eos',
+     message: [Getter/Setter] } }
+error! { message: 'bad message format',
+  cause: ':45,"used":true},{"PRN":4,"el":81,"az":288,"ss":41,"used":true},{"PRN":10,"el":39,"az":174,"ss":0,"used":false},{"PRN":12,"el":29,"az":313,"ss":39,"used":true},{"PRN":13,"el":5,"az":108,"ss":0,"used":false},{"PRN":17,"el":61,"az":101,"ss":44,"used":true},{"PRN":20,"el":24,"az":47,"ss":0,"used":false},{"PRN":23,"el":12,"az":80,"ss":0,"used":false},{"PRN":27,"el":5,"az":256,"ss":0,"used":false},{"PRN":28,"el":11,"az":165,"ss":0,"used":false}]}\r',
+  error: 
+   { stack: [Getter/Setter],
+     arguments: [ ':' ],
+     type: 'unexpected_token',
+     message: [Getter/Setter] } }
