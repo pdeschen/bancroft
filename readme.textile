@@ -49,6 +49,7 @@ h2. Features
 * Real-time location events.
 * Real-time satellite state events.
 * Location data includes "geojson":http://geojson.org/ geometries _Point_ format.
+* Automatic gpsd spawning with device hot-swapping
 
 h2. Installation
 
@@ -73,3 +74,4 @@ h2. Todos
 
 * Accumate waypoints/route into kml? 
 * Add options for non-moving position differential?
+* Spawn gpsd if not already launched?
