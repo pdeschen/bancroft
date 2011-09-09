@@ -35,7 +35,7 @@ var Bancroft =
       hostname : 'localhost',
       gpsd : {
         spawn : true,
-        device : '/dev/ttyUSB',
+        device : '/dev/ttyUSB0',
         port : 2947,
         pid : '/tmp/gpsd.pid'
       }
@@ -168,6 +168,7 @@ var gpsd = function (options, callback) {
       if (exists) {
         p.apply(this, [ callback ]);
       } else {
+        winston.info("device not found. watching device.");
         fs.watchFile(options.device, function (curr, prev) {
           winston.info("device status changed.");
           p.apply(this, [ callback ]);
