@@ -1,4 +1,4 @@
-"bancroft":http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method is a "node":http://nodejs.org client for the gps daemon providing configurable async location tracking.
+"bancroft":http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method is a "node":http://nodejs.org client for the "gps daemon":http://gpsd.berlios.de providing configurable async location tracking featuring "geojson":http://geojson.org/ geometries _Point_ format.
 
 h2. How it works
 
@@ -74,4 +74,3 @@ h2. Todos
 
 * Accumate waypoints/route into kml? 
 * Add options for non-moving position differential?
-* Spawn gpsd if not already launched?
