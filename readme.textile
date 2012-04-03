@@ -84,5 +84,6 @@ h3. Install from npm
 
 h2. Todos
 
+* Hot swap device notify should be extracted in own module with emitter
 * Accumulate waypoints/route into kml?
 * Add options for non-moving position differential?
