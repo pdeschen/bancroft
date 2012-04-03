@@ -51,6 +51,12 @@ h2. Features
 * Location data includes "geojson":http://geojson.org/ geometries _Point_ format.
 * Automatic gpsd spawning with device hot-swapping
 
+h2. ChangeLog
+
+h3. 0.0.7
+
+* Port event emitting to v0.6 (eelcocramer)
+
 h2. Installation
 
 h3. Requirements
