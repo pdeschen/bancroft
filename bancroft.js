@@ -1,8 +1,6 @@
 var spawn = require('child_process').spawn, sys = require('sys'), events = require('events'), fs = require('fs'), net =
   require('net'), path = require('path'), winston = require('winston');
 
-var emitter;
-
 /**
  * gpsd client constructor. Connection with daemon is established upon object
  * 
@@ -41,7 +39,7 @@ var Bancroft =
       }
     });
 
-    emitter = events.EventEmitter.call(this);
+    events.EventEmitter.call(this);
 
     var go =
       function () {
@@ -57,7 +55,7 @@ var Bancroft =
                 var data = JSON.parse(info[index]);
               } catch (error) {
                 winston.error("bad message format", info[index], error);
-                emitter.emit('error', {
+                self.emit('error', {
                   message : "bad message format",
                   cause : info[index],
                   error : error
@@ -65,7 +63,7 @@ var Bancroft =
                 continue;
               }
               if (data.class === 'VERSION') {
-                emitter.emit('connect', {
+                self.emit('connect', {
                   'release' : data.release,
                   'version' : data.version
                 });
@@ -80,7 +78,7 @@ var Bancroft =
                   self.location.altitude = data.alt;
                   self.location.speed = data.speed;
                   self.location.geometries.coordinates = [ data.lon, data.lat, data.alt ];
-                  emitter.emit('location', self.location);
+                  self.emit('location', self.location);
                 }
 
               } else if (data.class === 'SKY') {
@@ -90,39 +88,39 @@ var Bancroft =
                     /* emit if present and new state */
                     if (self.satellites[satellite.PRN] != satellite.used) {
                       self.satellites[satellite.PRN] = satellite.used;
-                      emitter.emit('satellite', self.satellites[satellite.PRN]);
+                      self.emit('satellite', self.satellites[satellite.PRN]);
                     }
                   } else {
                     /* emit if not present */
                     self.satellites[satellite.PRN] = satellite.used;
-                    emitter.emit('satellite', self.satellites[satellite.PRN]);
+                    self.emit('satellite', self.satellites[satellite.PRN]);
                   }
                 }
 
               } else if (data.class === 'ERROR') {
                 winston.error('protocol error', data);
-                emitter.emit('error', data);
+                self.emit('error', data);
               }
             }
           }
         });
         serviceSocket.on("close", function (err) {
           winston.info('socket disconnect');
-          emitter.emit('disconnect', err);
+          self.emit('disconnect', err);
         });
 
         serviceSocket.on('connect', function (socket) {
           serviceSocket.write('?WATCH={"enable":true,"json":true}\n');
-          serviceSocket.write('?POLL;\n');
+          //serviceSocket.write('?POLL;\n');
         });
 
         serviceSocket.on('error', function (error) {
           if (error.code === 'ECONNREFUSED') {
             winston.error('socket connection refused');
-            emitter.emit('error.connection');
+            self.emit('error.connection');
           } else {
             winston.error('socket error', error);
-            emitter.emit('error', error);
+            self.emit('error', error);
           }
         });
         serviceSocket.connect(opts.port, opts.hostname);
@@ -161,7 +159,7 @@ var gpsd = function (options, callback) {
           self.gpsd.on('exit', function (code) {
             winston.error('gpsd died.');
             self.gpsd = undefined;
-            emitter.emit('error.connection');
+            self.emit('error.connection');
           });
         }
       };
