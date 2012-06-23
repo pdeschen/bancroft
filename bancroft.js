@@ -1,4 +1,4 @@
-var spawn = require('child_process').spawn, sys = require('sys'), events = require('events'), fs = require('fs'), net =
+var spawn = require('child_process').spawn, util = require('util'), events = require('events'), fs = require('fs'), net =
   require('net'), path = require('path'), winston = require('winston');
 
 /**
@@ -210,5 +210,5 @@ var mixin = function (source, destination) {
 };
 
 /* get prototype chain */
-sys.inherits(Bancroft, events.EventEmitter);
+util.inherits(Bancroft, events.EventEmitter);
 module.exports = Bancroft;
