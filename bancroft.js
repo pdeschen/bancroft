@@ -145,7 +145,7 @@ var Bancroft =
 var gpsd = function (options, callback) {
   if (options.spawn) {
 
-    path.exists(options.device, function (exists) {
+    fs.exists(options.device, function (exists) {
       var arguments = [];
       /* fg process */
       arguments.push('-N');
