@@ -1,12 +1,16 @@
-"bancroft":http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method is a "node":http://nodejs.org client for the "gps daemon":http://gpsd.berlios.de providing configurable async location tracking featuring "geojson":http://geojson.org/ geometries _Point_ format.
+Bancroft
+========
 
-h2. How it works
+[bancroft](http://en.wikipedia.org/wiki/Global`Positioning_System#Bancroft.27s_method) is a [node](http://nodejs.org) client for the [gps daemon](http://catb.org/gpsd/) providing configurable async location tracking featuring [geojson](http://geojson.org/) geometries _Point` format.
 
-Upon object creation ( _new Bancroft()_ ), bancroft connects to a running GPS daemon and send _?WATCH_ and _?POLL_ messages to receive messages (json type) back from the daemon, hence, from the GPS device itself. Upon connection, a _connection_ event is emitted along with daemon version and release details object. A _disconnect_ event is emitted once the daemon is found off grid.
+How it works
+------------
 
-At any time, bancroft keeps track of the current location along with information about current satellite status. A _location_ event is emitted once a new location has been tracked, that is, whenever the latitude, longitude or altitude received from the device differs from the currently stored information. A _satellite_ event is emitted whenever a given satellite (PRN) changes status.
+Upon object creation ( `new Bancroft()` ), bancroft connects to a running GPS daemon and send `?WATCH` and `?POLL` messages to receive messages (json type) back from the daemon, hence, from the GPS device itself. Upon connection, a `connection` event is emitted along with daemon version and release details object. A `disconnect` event is emitted once the daemon is found off grid.
 
-h3. Location Structure
+At any time, bancroft keeps track of the current location along with information about current satellite status. A `location` event is emitted once a new location has been tracked, that is, whenever the latitude, longitude or altitude received from the device differs from the currently stored information. A `satellite` event is emitted whenever a given satellite (PRN) changes status.
+
+### Location Structure
 
 <pre>
 { 
@@ -23,7 +27,7 @@ h3. Location Structure
 
 </pre>
 
-h2. Examples
+## Examples
 
 <pre>
 var Bancroft = require('bancroft');
@@ -44,51 +48,67 @@ bancroft.on('disconnect', function (err) {
 
 </pre>
 
-h2. Features
+## Features
 
 * Real-time location events.
 * Real-time satellite state events.
-* Location data includes "geojson":http://geojson.org/ geometries _Point_ format.
+* Location data includes [geojson](http://geojson.org/) geometries `Point` format.
 * Automatic gpsd spawning with device hot-swapping
 
-h2. ChangeLog
+## ChangeLog
 
-h3. 0.0.7
+### 0.0.7
 * Port event emitting to v0.6 (eelcocramer)
 
-h3. 0.0.2
-* Added support for "geojson":http://geojson.org/ format as part of the location event.
+### 0.0.2
+* Added support for [geojson](http://geojson.org/) format as part of the location event.
 * Fixed missing speed property within location event.
 
-h3. 0.0.1
+### 0.0.1
 * Initial release
 
-h2. Installation
+## Installation
 
-h3. Requirements
+### Requirements
 
-This module assumes you have a working "gps daemon":http://gpsd.berlios.de accessible somewhere reacheable on the network along with a GPS tracking device up and running. This module has been tested with an old dusty Garmin eTrex Legend with a Serial->USB adapter cable using the NMEA data protocol.
+This module assumes you have a working [gps daemon](http://catb.org/gpsd/) accessible somewhere reacheable on the network along with a GPS tracking device up and running. This module has been tested with an old dusty Garmin eTrex Legend with a Serial->USB adapter cable using the NMEA data protocol. More devices have been reported to work with this modules.
 
-h4. Testing gpsd
+#### Supported Devices
 
-@$ sudo gpsd -D 2 -n -b -N -P /tmp/gpsd.pid /dev/ttyUSB0@
-@$ gpspipe -w@
+* Garmin eTrex Legend
 
-h3. Git Clone
+#### Mac OSX 64Bit
 
-@$ git clone git://github.com/pdeschen/bancroft.git@
+Support for gpsd is available from my own contribution to homebrew. However, as of this writing, pull request has yet to be merged into master.
 
-h3. Install from npm
+Support for Serial-USB adapter also requires some [special sauce](http://reg88.com/?p=243). Basically,
 
-@$ sudo npm install bancroft [-g]@
+    wget -o osx-pl2303.kext.zip "http://sourceforge.net/tracker/download.php?group_id=157692&atid=804837&file_id=363913&aid=2952982"
+    unzip osx-pl2303.kext.zip
+    sudo cp -r ~/osx-pl2303.kext /System/Library/Extensions/
+    sudo kextload /System/Library/Extensions/osx-pl2303.kext
+    sudo ln -s /dev/tty.PL2303-* /dev/ttyUSB0 
 
-h2. Todos
+#### Testing gpsd
+
+    $ sudo gpsd -D 2 -n -b -N -P /tmp/gpsd.pid /dev/ttyUSB0
+    $ gpspipe -w
+
+### Git Clone
+
+    $ git clone git://github.com/pdeschen/bancroft.git
+
+### Install from npm
+
+    $ sudo npm install bancroft [-g]
+
+## Todos
 
 * Hot swap device notify should be extracted in own module with emitter
 * Accumulate waypoints/route into kml?
 * Add options for non-moving position differential?
 
-h2. License
+## License
 
 (The MIT License)
 
