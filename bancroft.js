@@ -1,5 +1,10 @@
-var spawn = require('child_process').spawn, sys = require('sys'), events = require('events'), fs = require('fs'), net =
-  require('net'), path = require('path'), winston = require('winston');
+var spawn = require('child_process').spawn;
+var util = require('util');
+var events = require('events');
+var fs = require('fs');
+var net = require('net');
+var path = require('path');
+var winston = require('winston');
 
 /**
  * gpsd client constructor. Connection with daemon is established upon object
@@ -210,5 +215,5 @@ var mixin = function (source, destination) {
 };
 
 /* get prototype chain */
-sys.inherits(Bancroft, events.EventEmitter);
+util.inherits(Bancroft, events.EventEmitter);
 module.exports = Bancroft;
