@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/pdeschen/bancroft.png)](http://travis-ci.org/pdeschen/bancroft)
 "bancroft":http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method is a "node":http://nodejs.org client for the "gps daemon":http://gpsd.berlios.de providing configurable async location tracking featuring "geojson":http://geojson.org/ geometries _Point_ format.
 
 h2. How it works
