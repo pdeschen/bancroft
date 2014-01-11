@@ -8,9 +8,9 @@ var winston = require('winston');
 
 /**
  * gpsd client constructor. Connection with daemon is established upon object
- * 
+ *
  * creation.
- * 
+ *
  * @param options
  *            {'port': 2947, 'hostname': 'localhost'}
  * @return this with access to satellites and location properties along with
@@ -73,8 +73,8 @@ var Bancroft =
                   'version' : data.version
                 });
               } else if (data.class === 'TPV') {
-                /* timestamp received is in seconds */
-                self.location.timestamp = data.time * 1000;
+
+                self.location.timestamp = data.time;
                 /* are we moving */
                 if (self.location.latitude !== data.lat || self.location.longitude !== data.lon
                   || self.location.altitude !== data.alt) {
