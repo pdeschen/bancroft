@@ -1,10 +1,8 @@
-Bancroft
-========
+## Bancroft
 
-[bancroft](http://en.wikipedia.org/wiki/Global`Positioning_System#Bancroft.27s_method) is a [node](http://nodejs.org) client for the [gps daemon](http://catb.org/gpsd/) providing configurable async location tracking featuring [geojson](http://geojson.org/) geometries _Point` format.
+[bancroft](http://en.wikipedia.org/wiki/Global_Positioning_System#Bancroft.27s_method) is a [node](http://nodejs.org) client for the [gps daemon](http://catb.org/gpsd/) providing configurable async location tracking featuring [geojson](http://geojson.org/) geometries point format.
 
-How it works
-------------
+## How it works
 
 Upon object creation ( `new Bancroft()` ), bancroft connects to a running GPS daemon and send `?WATCH` and `?POLL` messages to receive messages (json type) back from the daemon, hence, from the GPS device itself. Upon connection, a `connection` event is emitted along with daemon version and release details object. A `disconnect` event is emitted once the daemon is found off grid.
 
@@ -53,9 +51,17 @@ bancroft.on('disconnect', function (err) {
 * Real-time location events.
 * Real-time satellite state events.
 * Location data includes [geojson](http://geojson.org/) geometries `Point` format.
-* Automatic gpsd spawning with device hot-swapping
 
 ## ChangeLog
+
+### 0.0.9
+
+* Fix date parsing (@flochtililoch)
+* Removed automatic gpsd spawning
+
+### 0.0.8
+
+* Node 0.8 support
 
 ### 0.0.7
 * Port event emitting to v0.6 (eelcocramer)
@@ -73,9 +79,10 @@ bancroft.on('disconnect', function (err) {
 
 This module assumes you have a working [gps daemon](http://catb.org/gpsd/) accessible somewhere reacheable on the network along with a GPS tracking device up and running. This module has been tested with an old dusty Garmin eTrex Legend with a Serial->USB adapter cable using the NMEA data protocol. More devices have been reported to work with this modules.
 
-#### Supported Devices
+#### Known Compatible Devices
 
 * Garmin eTrex Legend
+* GlobalSat BU-353 
 
 #### Mac OSX 64Bit
 
@@ -107,6 +114,9 @@ Support for Serial-USB adapter also requires some [special sauce](http://reg88.c
 * Hot swap device notify should be extracted in own module with emitter
 * Accumulate waypoints/route into kml?
 * Add options for non-moving position differential?
+* Extract message parser for better testability
+* Add mocha unit test
+* Automatic gpsd spawning with device hot-swapping
 
 ## License
 
