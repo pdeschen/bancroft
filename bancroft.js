@@ -90,21 +90,22 @@ var Bancroft = function (options) {
             }
 
           } else if (data.class === 'SKY') {
-            for ( var index = 0; index < data.satellites.length; index++) {
-              var satellite = data.satellites[index];
-              if (self.satellites[satellite.PRN] !== undefined) {
-                /* emit if present and new state */
-                if (self.satellites[satellite.PRN] != satellite.used) {
+            if (typeof data.satellites !== "undefined") { 
+              for ( var index = 0; index < data.satellites.length; index++) {
+                var satellite = data.satellites[index];
+                if (self.satellites[satellite.PRN] !== undefined) {
+                  /* emit if present and new state */
+                  if (self.satellites[satellite.PRN] != satellite.used) {
+                    self.satellites[satellite.PRN] = satellite.used;
+                    self.emit('satellite', self.satellites[satellite.PRN]);
+                  }
+                } else {
+                  /* emit if not present */
                   self.satellites[satellite.PRN] = satellite.used;
                   self.emit('satellite', self.satellites[satellite.PRN]);
                 }
-              } else {
-                /* emit if not present */
-                self.satellites[satellite.PRN] = satellite.used;
-                self.emit('satellite', self.satellites[satellite.PRN]);
               }
             }
-
           } else if (data.class === 'ERROR') {
             winston.error('protocol error', data);
             self.emit('error', data);

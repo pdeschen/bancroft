@@ -54,6 +54,10 @@ bancroft.on('disconnect', function (err) {
 
 ## ChangeLog
 
+### 0.0.10
+
+* Add undefined check (issue #9)
+
 ### 0.0.9
 
 * Fix date parsing (@flochtililoch)
