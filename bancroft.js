@@ -45,7 +45,6 @@ var Bancroft = function (options) {
     var serviceSocket = new net.Socket();
     serviceSocket.setEncoding('ascii');
     serviceSocket.on("data", function (payload) {
-      console.log(payload);
       var info = payload.split('\n');
       for ( var index = 0; index < info.length; index++) {
         if (info[index]) {
