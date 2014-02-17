@@ -2,7 +2,7 @@
   "author": "Pascal Deschenes <pdeschen@rassemblr.com> (http://blog.rassemblr.com)",
   "name": "bancroft",
   "description": "gpsd client for GPS tracking device.",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "keywords": ["gps", "gpsd", "location", "tracking", "position"],
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "Pascal Deschenes <pdeschen@rassemblr.com> (http://blog.rassemblr.com)",
     "eelcocramer <eelco.cramer@gmail.com>",
     "tlhunter <tlhunter@gmail.com> (http://thomashunter.name)",
-    "flochtililoch" 
+    "flochtililoch",
+    "jackwilsdon <jack.wilsdon@gmail.com> (http://jackwilsdon.me)"  
   ]
 }
