@@ -54,6 +54,10 @@ bancroft.on('disconnect', function (err) {
 
 ## ChangeLog
 
+### 0.0.12
+
++ Add `track` property to location hash.
+
 ### 0.0.11
 
 * remove console log

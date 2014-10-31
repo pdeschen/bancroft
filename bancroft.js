@@ -84,6 +84,7 @@ var Bancroft = function (options) {
               self.location.longitude = data.lon;
               self.location.altitude = data.alt;
               self.location.speed = data.speed;
+              self.location.track = data.track;
               self.location.geometries.coordinates = [ data.lon, data.lat, data.alt ];
               self.emit('location', self.location);
             }
