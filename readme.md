@@ -17,6 +17,7 @@ At any time, bancroft keeps track of the current location along with information
   longitude: -73.569651667,
   altitude: 28.9,
   speed: 11,
+  track: 10.3788,
   geometries: { 
     type: 'Point',
     coordinates: [ -73.569651667, 45.456445, 28.9 ] 
