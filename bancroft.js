@@ -80,6 +80,10 @@ var Bancroft = function (options) {
             /* are we moving */
             if (self.location.latitude !== data.lat || self.location.longitude !== data.lon
                 || self.location.altitude !== data.alt) {
+              self.location.mode = data.mode;
+              self.location.ept = data.ept;
+              self.location.epx = data.epx;
+              self.location.epy = data.epy;
               self.location.latitude = data.lat;
               self.location.longitude = data.lon;
               self.location.altitude = data.alt;
