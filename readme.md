@@ -10,81 +10,42 @@ At any time, bancroft keeps track of the current location along with information
 
 ### Location Structure
 
-<pre>
-{ 
-  timestamp: 1311296682000,
-  latitude: 45.456445,
-  longitude: -73.569651667,
-  altitude: 28.9,
-  speed: 11,
-  track: 10.3788,
-  geometries: { 
-    type: 'Point',
-    coordinates: [ -73.569651667, 45.456445, 28.9 ] 
-  } 
-}
-
-</pre>
+    { 
+      timestamp: 1311296682000,
+      latitude: 45.456445,
+      longitude: -73.569651667,
+      altitude: 28.9,
+      speed: 11,
+      track: 10.3788,
+      geometries: { 
+        type: 'Point',
+        coordinates: [ -73.569651667, 45.456445, 28.9 ] 
+      } 
+    }
 
 ## Examples
 
-<pre>
-var Bancroft = require('bancroft');
+    var Bancroft = require('bancroft');
 
-var bancroft = new Bancroft();
-bancroft.on('connect', function () {
-  console.log('connected');
-});
-bancroft.on('location', function (location) {
-  console.log('got new location');
-});
-bancroft.on('satellite', function (satellite) {
-  console.log('got new satellite state');
-});
-bancroft.on('disconnect', function (err) {
-  console.log('disconnected');
-});
-
-</pre>
+    var bancroft = new Bancroft();
+    bancroft.on('connect', function () {
+      console.log('connected');
+    });
+    bancroft.on('location', function (location) {
+      console.log('got new location');
+    });
+    bancroft.on('satellite', function (satellite) {
+      console.log('got new satellite state');
+    });
+    bancroft.on('disconnect', function (err) {
+      console.log('disconnected');
+    });
 
 ## Features
 
 * Real-time location events.
 * Real-time satellite state events.
 * Location data includes [geojson](http://geojson.org/) geometries `Point` format.
-
-## ChangeLog
-
-### 0.0.12
-
-+ Add `track` property to location hash.
-
-### 0.0.11
-
-* remove console log
-
-### 0.0.10
-
-* Add undefined check (issue #9)
-
-### 0.0.9
-
-* Fix date parsing (@flochtililoch)
-* Removed automatic gpsd spawning
-
-### 0.0.8
-
-* Node 0.8 support
-
-### 0.0.7
-* Port event emitting to v0.6 (eelcocramer)
-
-### 0.0.2
-* Added support for [geojson](http://geojson.org/) format as part of the location event.
-* Fixed missing speed property within location event.
-
-### 0.0.1
-* Initial release
 
 ## Installation
 
